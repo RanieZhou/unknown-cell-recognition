@@ -1,0 +1,27 @@
+project:
+  dataset_name: immune_dc
+  run_name: immune_dc_lsr_globalT
+
+backbone:
+  name: scanvi
+
+data:
+  input_h5ad: data/human_immune_health_atlas_dc.patched.h5ad
+  label_column: AIFI_L2
+  batch_column: batch_id
+  known_classes:
+    - cDC2
+    - pDC
+    - cDC1
+  unknown_classes:
+    - ASDC
+
+rescue:
+  corridor_priority:
+    - pDC
+    - cDC1
+    - cDC2
+  lineage_alpha_map:
+    pDC_like: 0.30
+    cDC1_like: 0.15
+    cDC2_like: 0.00

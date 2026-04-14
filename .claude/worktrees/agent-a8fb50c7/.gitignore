@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Conda / venv
+.env
+.venv/
+venv/
+
+# Data
+data/
+datasets/
+*.h5ad
+*.loom
+*.feather
+*.parquet
+*.pkl
+*.pt
+*.pth
+*.ckpt
+
+# Outputs
+outputs/
+results/
+logs/
+checkpoints/
+figures/tmp/
+
+# OS
+.DS_Store
+Thumbs.db

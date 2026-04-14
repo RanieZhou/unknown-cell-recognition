@@ -1,0 +1,80 @@
+project:
+  method_name: lineage_selective_rescue_globalT
+  dataset_name: immune_dc
+  run_name: immune_dc_lsr_globalT
+  output_root: outputs/runs
+
+backbone:
+  name: scanvi
+
+data:
+  input_h5ad: data/human_immune_health_atlas_dc.patched.h5ad
+  label_column: AIFI_L2
+  batch_column: batch_id
+  known_classes:
+    - cDC2
+    - pDC
+    - cDC1
+  unknown_classes:
+    - ASDC
+  use_classes: null
+  counts_source: raw
+  model_layer: counts
+  train_known_ratio: 0.70
+  val_known_ratio: 0.15
+  test_known_ratio: 0.15
+
+training:
+  seed: 42
+  backbone_type: scanvi
+  n_latent: 10
+  n_layers: 2
+  n_hidden: 128
+  dropout_rate: 0.1
+  gene_likelihood: nb
+  scvi_max_epochs: 200
+  scanvi_max_epochs: 100
+  unlabel_frac: 0.10
+
+expression:
+  distance_metric: mahalanobis_min_known
+  combiner: val_known_misclassification_logreg
+
+grn:
+  enabled: true
+  feature_source: pyscenic
+  pyscenic:
+    db_dir: data/pyscenic_dbs
+    tf_list: allTFs_hg38.txt
+    ranking_db: hg38_10kbp_up_10kbp_down_full_tx_v10_clust.genes_vs_motifs.rankings.feather
+    motif_table: motifs-v10nr_clust-nr.hgnc-m0.001-o0.0.tbl
+    nes_threshold: 2.5
+    gene_filter_pct: 0.01
+    num_workers: 4
+    aucell_workers: 1
+
+rescue:
+  corridor_rule: priority_union
+  threshold_rule: global_percentile_95
+  gate_quantile: 0.90
+  selective_alpha: 0.20
+  corridor_priority:
+    - pDC
+    - cDC1
+    - cDC2
+  lineage_alpha_map:
+    pDC_like: 0.30
+    cDC1_like: 0.15
+    cDC2_like: 0.00
+  positive_only: true
+  allow_cdc2: false
+
+threshold:
+  percentile: 95
+  min_bucket_val_cells: 100
+
+runtime:
+  use_cached: false
+  resume: false
+  save_plots: true
+  save_reports: true

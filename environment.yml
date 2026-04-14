@@ -1,0 +1,22 @@
+name: scgrn
+channels:
+  - conda-forge
+  - bioconda
+  - pytorch
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - anndata
+  - scanpy
+  - loompy
+  - pyyaml
+  - pytorch
+  - pip:
+      - scvi-tools
+      - pyscenic

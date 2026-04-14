@@ -1,0 +1,32 @@
+project:
+  dataset_name: pancreas
+  run_name: pancreas_lsr_globalT
+
+backbone:
+  name: scanvi
+
+data:
+  input_h5ad: data/human_pancreas_norm_complexBatch.patched.h5ad
+  label_column: celltype
+  batch_column: tech
+  known_classes:
+    - alpha
+    - beta
+    - delta
+  unknown_classes:
+    - gamma
+  counts_source: x
+  model_layer: model_input
+
+training:
+  gene_likelihood: normal
+
+rescue:
+  corridor_priority:
+    - alpha
+    - beta
+    - delta
+  lineage_alpha_map:
+    alpha_like: 0.30
+    beta_like: 0.15
+    delta_like: 0.00
